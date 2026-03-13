@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SARTHAK News</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0d0d;
+    --paper: #f5f0e8;
+    --accent: #c0392b;
+    --accent2: #1a3a5c;
+    --muted: #6b6560;
+    --rule: #2c2c2c;
+    --highlight: #f0e6d0;
+    --col-gap: 1.5rem;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Sans 3', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ── TOP BAR ── */
+  .top-bar {
+    background: var(--ink);
+    color: #ccc;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    padding: 5px 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .top-bar a { color: #ccc; text-decoration: none; margin: 0 8px; }
+  .top-bar a:hover { color: var(--accent); }
+  #live-time { font-variant-numeric: tabular-nums; }
+
+  /* ── MASTHEAD ── */
+  .masthead {
+    background: var(--paper);
+    border-bottom: 4px double var(--ink);
+    padding: 1.2rem 2rem 0.8rem;
+    text-align: center;
+    position: relative;
+  }
+  .masthead-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+  }
+  .logo-mark {
+    width: 54px; height: 54px;
+    background: var(--accent);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem; font-weight: 900;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .masthead h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .masthead h1 span { color: var(--accent); }
+  .masthead-tagline {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .masthead-date {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    position: absolute;
+    right: 2rem;
+    bottom: 10px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    background: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 0 2rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s;
+    border-bottom: 3px solid transparent;
+  }
+  .nav-btn:hover, .nav-btn.active {
+    color: #fff;
+    background: rgba(255,255,255,0.08);
+    border-bottom-color: var(--accent);
+  }
+  .nav-search {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  #search-input {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 2px;
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 0.78rem;
+    width: 160px;
+    outline: none;
+  }
+  #search-input::placeholder { color: rgba(255,255,255,0.4); }
+  #search-btn {
+    background: var(--accent);
+    border: none;
+    color: #fff;
+    padding: 5px 12px;
+    cursor: pointer;
+    font-size: 0.78rem;
+    border-radius: 2px;
+  }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    height: 30px;
+  }
+  .ticker-label {
+    background: var(--accent2);
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    padding: 0 14px;
+    height: 100%;
+    display: flex; align-items: center;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .ticker-track {
+    display: flex;
+    animation: tickerScroll 40s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-track:hover { animation-play-state: paused; }
+  .ticker-item {
+    font-size: 0.75rem;
+    padding: 0 2.5rem;
+    letter-spacing: 0.03em;
+  }
+  .ticker-item::before {
+    content: '◆';
+    margin-right: 10px;
+    opacity: 0.7;
+  }
+  @keyframes tickerScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .page-wrapper {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* ── HERO GRID ── */
+  .hero-section {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: var(--col-gap);
+    padding: 1.5rem 0 1rem;
+    border-bottom: 2px solid var(--ink);
+  }
+  .hero-main {
+    display: grid;
+    grid-template-rows: auto auto;
+    gap: var(--col-gap);
+  }
+  .hero-lead {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border-radius: 1px;
+  }
+  .hero-lead-img {
+    width: 100%;
+    height: 360px;
+    object-fit: cover;
+    display: block;
+    background: linear-gradient(135deg, #1a3a5c 0%, #0d0d0d 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-lead-img::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%);
+  }
+  .hero-lead-text {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 1.5rem;
+    z-index: 2;
+  }
+  .article-category {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    margin-bottom: 6px;
+  }
+  .hero-lead-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.2;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+  .hero-lead-summary {
+    color: rgba(255,255,255,0.82);
+    font-size: 0.82rem;
+    margin-top: 5px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* sub-grid below lead */
+  .hero-sub {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--col-gap);
+  }
+  .hero-side { display: flex; flex-direction: column; gap: 10px; }
+
+  /* ── ARTICLE CARD ── */
+  .article-card {
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .article-card:hover { transform: translateY(-2px); }
+  .article-card-img {
+    width: 100%; height: 160px;
+    object-fit: cover;
+    background: #ddd;
+    display: block;
+    border-radius: 1px;
+    overflow: hidden;
+  }
+  .article-card-body { padding: 8px 0 0; }
+  .article-card-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.3;
+    color: var(--ink);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .article-meta {
+    font-size: 0.68rem;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: 0.03em;
+  }
+  .article-snippet {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* sidebar list items */
+  .sidebar-item {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .sidebar-item:last-child { border-bottom: none; }
+  .sidebar-item:hover { background: var(--highlight); }
+  .sidebar-item-num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ddd;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 28px;
+  }
+  .sidebar-item-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+  .sidebar-item-meta { font-size: 0.68rem; color: var(--muted); margin-top: 3px; }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 1.5rem 0 1rem;
+  }
+  .section-header-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .section-header-line {
+    flex: 1;
+    height: 2px;
+    background: var(--ink);
+  }
+  .section-header-label::before {
+    content: '';
+    display: inline-block;
+    width: 10px; height: 10px;
+    background: var(--accent);
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  /* ── CATALOGUE GRID ── */
+  .catalogue-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--col-gap);
+    margin-bottom: 1.5rem;
+  }
+  .catalogue-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+  /* ── LIST STYLE ── */
+  .news-list { display: flex; flex-direction: column; gap: 0; }
+  .news-list-item {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+  }
+  .news-list-item:hover { background: var(--highlight); }
+  .news-list-thumb {
+    width: 100%; aspect-ratio: 4/3;
+    object-fit: cover;
+    background: #ddd;
+    border-radius: 1px;
+  }
+  .news-list-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  /* ── OPINION / EDITORIAL ── */
+  .opinion-card {
+    padding: 14px;
+    border-left: 4px solid var(--accent);
+    background: var(--highlight);
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .opinion-card:hover { border-color: var(--accent2); }
+  .opinion-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.4;
+    color: var(--ink);
+  }
+  .opinion-author {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 8px;
+  }
+
+  /* ── AD BANNER ── */
+  .ad-banner {
+    background: var(--accent2);
+    color: #fff;
+    text-align: center;
+    padding: 12px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    margin: 1.2rem 0;
+    opacity: 0.5;
+  }
+
+  /* ── TWO-COL LAYOUT ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: var(--col-gap);
+  }
+  .sticky-sidebar { position: sticky; top: 12px; align-self: start; }
+  .sidebar-box {
+    border: 2px solid var(--ink);
+    padding: 14px;
+    margin-bottom: 1.2rem;
+    background: var(--paper);
+  }
+  .sidebar-box-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+  }
+  .weather-widget { text-align: center; padding: 8px 0; }
+  .weather-temp {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+  }
+  .weather-city { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--paper);
+    max-width: 720px;
+    width: 100%;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 2rem;
+    position: relative;
+    border-top: 5px solid var(--accent);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    animation: modalIn 0.25s ease;
+  }
+  @keyframes modalIn { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform: none; } }
+  .modal-close {
+    position: absolute;
+    top: 14px; right: 14px;
+    background: none; border: none;
+    font-size: 1.4rem; cursor: pointer; color: var(--muted);
+  }
+  .modal-close:hover { color: var(--accent); }
+  .modal-category { margin-bottom: 6px; }
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; font-weight: 900;
+    line-height: 1.25;
+    margin-bottom: 10px;
+  }
+  .modal-meta { font-size: 0.72rem; color: var(--muted); margin-bottom: 16px; letter-spacing: 0.04em; }
+  .modal-img {
+    width: 100%; height: 220px;
+    object-fit: cover;
+    border-radius: 2px;
+    margin-bottom: 16px;
+    background: #ccc;
+    display: block;
+  }
+  .modal-body { font-size: 0.95rem; line-height: 1.75; color: #222; }
+  .modal-loading {
+    text-align: center; padding: 2rem 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; color: var(--muted);
+  }
+  .modal-loading::after { content: ''; display: block; width: 30px; height: 3px; background: var(--accent); margin: 12px auto 0; animation: loadPulse 1s ease infinite alternate; }
+  @keyframes loadPulse { from { width: 30px; } to { width: 80px; } }
+
+  /* ── LOADER ── */
+  .section-loading {
+    display: flex; align-items: center; justify-content: center;
+    height: 120px;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem; color: var(--muted);
+    gap: 10px;
+  }
+  .spin {
+    width: 18px; height: 18px;
+    border: 2px solid #ddd;
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    color: #bbb;
+    padding: 2rem;
+    margin-top: 2rem;
+  }
+  .footer-grid {
+    max-width: 1280px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 2rem;
+  }
+  .footer-brand h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 900;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .footer-brand h2 span { color: var(--accent); }
+  .footer-brand p { font-size: 0.8rem; line-height: 1.6; }
+  .footer-col h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #fff;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #333;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 6px; }
+  .footer-col a { color: #bbb; text-decoration: none; font-size: 0.82rem; }
+  .footer-col a:hover { color: var(--accent); }
+  .footer-bottom {
+    max-width: 1280px; margin: 1.5rem auto 0;
+    padding-top: 1rem;
+    border-top: 1px solid #333;
+    text-align: center;
+    font-size: 0.72rem;
+    color: #666;
+  }
+
+  /* ── SKELETON ── */
+  .skeleton { background: linear-gradient(90deg, #e8e2d8 25%, #d8d2c8 50%, #e8e2d8 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 2px; }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero-section { grid-template-columns: 1fr; }
+    .hero-sub { grid-template-columns: 1fr; }
+    .catalogue-grid { grid-template-columns: 1fr 1fr; }
+    .two-col { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .catalogue-grid { grid-template-columns: 1fr; }
+    .catalogue-grid.cols-4 { grid-template-columns: 1fr 1fr; }
+    .masthead h1 { font-size: 2.2rem; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .top-bar .links { display: none; }
+  }
+
+  /* image placeholder patterns */
+  .img-ph { position: relative; overflow: hidden; }
+  .img-ph::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #c8c0b0 0%, #a0967e 100%);
+  }
+  .img-ph .ph-icon {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+    opacity: 0.3;
+    z-index: 1;
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div class="links">
+    <a href="#">E-Paper</a>
+    <a href="#">Newsletters</a>
+    <a href="#">Podcasts</a>
+    <a href="#">Subscribe</a>
+  </div>
+  <span id="live-time">Loading…</span>
+  <div class="links">
+    <a href="#">Login</a>
+    <a href="#">Sign Up</a>
+  </div>
+</div>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="logo-mark">S</div>
+    <div>
+      <h1>SARTHAK <span>News</span></h1>
+      <p class="masthead-tagline">Truth · Depth · Perspective — India's News Voice</p>
+    </div>
+  </div>
+  <div class="masthead-date" id="masthead-date"></div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <button class="nav-btn active" onclick="loadSection('top')">Top Stories</button>
+  <button class="nav-btn" onclick="loadSection('india')">India</button>
+  <button class="nav-btn" onclick="loadSection('world')">World</button>
+  <button class="nav-btn" onclick="loadSection('business')">Business</button>
+  <button class="nav-btn" onclick="loadSection('technology')">Technology</button>
+  <button class="nav-btn" onclick="loadSection('science')">Science</button>
+  <button class="nav-btn" onclick="loadSection('sports')">Sports</button>
+  <button class="nav-btn" onclick="loadSection('entertainment')">Entertainment</button>
+  <button class="nav-btn" onclick="loadSection('health')">Health</button>
+  <button class="nav-btn" onclick="loadSection('politics')">Politics</button>
+  <button class="nav-btn" onclick="loadSection('environment')">Environment</button>
+  <button class="nav-btn" onclick="loadSection('opinion')">Opinion</button>
+  <div class="nav-search">
+    <input id="search-input" type="text" placeholder="Search news…" onkeydown="if(event.key==='Enter') searchNews()">
+    <button id="search-btn" onclick="searchNews()">Go</button>
+  </div>
+</nav>
+
+<!-- BREAKING TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-label">⚡ Breaking</div>
+  <div style="overflow:hidden;flex:1">
+    <div class="ticker-track" id="ticker-track">
+      <span class="ticker-item">Loading latest headlines…</span>
+      <span class="ticker-item">SARTHAK News — Stay Informed, Stay Ahead</span>
+      <span class="ticker-item">India's most comprehensive news platform</span>
+      <span class="ticker-item">Loading latest headlines…</span>
+      <span class="ticker-item">SARTHAK News — Stay Informed, Stay Ahead</span>
+      <span class="ticker-item">India's most comprehensive news platform</span>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="page-wrapper">
+  <div id="main-content">
+    <!-- Dynamic content renders here -->
+    <div class="section-loading"><div class="spin"></div> Loading Top Stories…</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h2>SARTHAK <span>News</span></h2>
+      <p>Delivering credible, in-depth journalism since 2024. We cover India and the world with rigour, fairness, and a commitment to the truth.</p>
+    </div>
+    <div class="footer-col">
+      <h3>Sections</h3>
+      <ul>
+        <li><a href="#">Top Stories</a></li>
+        <li><a href="#">India</a></li>
+        <li><a href="#">World</a></li>
+        <li><a href="#">Business</a></li>
+        <li><a href="#">Technology</a></li>
+        <li><a href="#">Sports</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Company</h3>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Editorial Policy</a></li>
+        <li><a href="#">Advertise</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h3>Follow Us</h3>
+      <ul>
+        <li><a href="#">Twitter / X</a></li>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">YouTube</a></li>
+        <li><a href="#">Telegram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 SARTHAK News. All rights reserved. | Privacy Policy | Terms of Service</div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="article-modal">
+    <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    <div id="modal-inner"></div>
+  </div>
+</div>
+
+<script>
+// ── TIME & DATE ──────────────────────────────────────────────
+function updateTime() {
+  const now = new Date();
+  document.getElementById('live-time').textContent =
+    now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' IST';
+}
+updateTime(); setInterval(updateTime, 1000);
+document.getElementById('masthead-date').textContent =
+  new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+// ── STATE ────────────────────────────────────────────────────
+let currentSection = 'top';
+let cachedSections = {};
+
+// ── CATEGORY COLOURS ─────────────────────────────────────────
+const catColors = {
+  india:'#e67e22', world:'#2980b9', business:'#27ae60', technology:'#8e44ad',
+  science:'#16a085', sports:'#c0392b', entertainment:'#d35400', health:'#1abc9c',
+  politics:'#e74c3c', environment:'#2ecc71', opinion:'#7f8c8d', top:'#c0392b'
+};
+
+// ── API CALL ─────────────────────────────────────────────────
+async function fetchNewsFromClaude(section, query = null) {
+  const isSearch = !!query;
+  const topicMap = {
+    top: 'top headlines from India and the world',
+    india: 'India news — politics, society, economy, states',
+    world: 'international news — global affairs, conflicts, diplomacy',
+    business: 'business, economy, markets, startups, finance',
+    technology: 'technology, AI, gadgets, Silicon Valley, Indian tech',
+    science: 'science, space, research, discoveries',
+    sports: 'sports — cricket, football, Olympics, Indian sports',
+    entertainment: 'Bollywood, Hollywood, OTT, music, celebrities',
+    health: 'health, medicine, fitness, mental health, public health',
+    politics: 'political news — parties, elections, policy, governance',
+    environment: 'environment, climate change, sustainability, nature',
+    opinion: 'opinion, analysis, editorials, commentary'
+  };
+  const topic = isSearch ? `news about: "${query}"` : (topicMap[section] || 'general news');
+  const count = isSearch ? 6 : (section === 'top' ? 8 : 9);
+
+  const prompt = `You are a news data API for SARTHAK News, an Indian news website. Generate ${count} realistic, current-style news articles about ${topic}. Today is ${new Date().toDateString()}.
+
+Return ONLY a JSON array, no markdown, no explanation. Each object must have exactly these keys:
+- "id": unique string
+- "title": compelling headline (max 90 chars)
+- "category": one of [India, World, Business, Technology, Science, Sports, Entertainment, Health, Politics, Environment, Opinion]
+- "summary": 1-sentence teaser (max 120 chars)
+- "body": 3 paragraphs of article content, realistic and detailed, separated by \\n\\n
+- "author": full name
+- "time": relative time like "2 hours ago" or "45 minutes ago"
+- "readTime": e.g. "4 min read"
+- "emoji": single emoji representing the story
+- "imageColor": a CSS hex gradient pair like "#1a3a5c,#0d0d0d"
+
+Make the news realistic, topical, and relevant. Mix Indian and global perspectives. Be informative.`;
+
+  const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 4000,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  const data = await resp.json();
+  const text = data.content[0].text.trim().replace(/^```json|^```|```$/g, '').trim();
+  return JSON.parse(text);
+}
+
+// ── TICKER ───────────────────────────────────────────────────
+async function loadTicker() {
+  try {
+    const articles = await fetchNewsFromClaude('top');
+    const items = articles.slice(0, 6).map(a => `<span class="ticker-item">${a.title}</span>`).join('');
+    const track = document.getElementById('ticker-track');
+    track.innerHTML = items + items; // doubled for seamless loop
+  } catch(e) {}
+}
+loadTicker();
+
+// ── IMAGE PLACEHOLDER ────────────────────────────────────────
+function makePlaceholderImg(cls, height, colors, emoji) {
+  const [c1, c2] = (colors || '#1a3a5c,#0d0d0d').split(',');
+  return `<div class="${cls} img-ph" style="height:${height}px;background:linear-gradient(135deg,${c1} 0%,${c2} 100%)"><span class="ph-icon">${emoji||'📰'}</span></div>`;
+}
+
+// ── RENDER SECTION ───────────────────────────────────────────
+function renderTopSection(articles) {
+  const lead = articles[0];
+  const sub1 = articles[1];
+  const sub2 = articles[2];
+  const side = articles.slice(3, 7);
+  const grid = articles.slice(7);
+
+  const sideItems = side.map((a, i) => `
+    <div class="sidebar-item" onclick="openArticle(${JSON.stringify(a).replace(/"/g, '&quot;')})">
+      <div class="sidebar-item-num">0${i+1}</div>
+      <div>
+        <div class="sidebar-item-title">${a.title}</div>
+        <div class="sidebar-item-meta">${a.category} · ${a.time}</div>
+      </div>
+    </div>`).join('');
+
+  return `
+  <div class="hero-section">
+    <div class="hero-main">
+      <div class="hero-lead article-card" onclick="openArticle(${JSON.stringify(lead).replace(/"/g, '&quot;')})">
+        ${makePlaceholderImg('hero-lead-img', 360, lead.imageColor, lead.emoji)}
+        <div class="hero-lead-text">
+          <span class="article-category">${lead.category}</span>
+          <div class="hero-lead-title">${lead.title}</div>
+          <div class="hero-lead-summary">${lead.summary}</div>
+        </div>
+      </div>
+      <div class="hero-sub">
+        ${[sub1, sub2].map(a => `
+          <div class="article-card" onclick="openArticle(${JSON.stringify(a).replace(/"/g, '&quot;')})">
+            ${makePlaceholderImg('article-card-img', 160, a.imageColor, a.emoji)}
+            <div class="article-card-body">
+              <span class="article-category" style="font-size:0.6rem">${a.category}</span>
+              <div class="article-card-title">${a.title}</div>
+              <div class="article-meta">${a.author} · ${a.time} · ${a.readTime}</div>
+              <div class="article-snippet">${a.summary}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div>
+      <div class="section-header"><span class="section-header-label">Most Read</span><div class="section-header-line"></div></div>
+      <div>${sideItems}</div>
+    </div>
+  </div>
+  ${grid.length ? `
+  <div class="section-header"><span class="section-header-label">More Stories</span><div class="section-header-line"></div></div>
+  <div class="catalogue-grid">
+    ${grid.map(a => `
+      <div class="article-card" onclick="openArticle(${JSON.stringify(a).replace(/"/g, '&quot;')})">
+        ${makePlaceholderImg('article-card-img', 160, a.imageColor, a.emoji)}
+        <div class="article-card-body">
+          <span class="article-category" style="font-size:0.6rem">${a.category}</span>
+          <div class="article-card-title">${a.title}</div>
+          <div class="article-meta">${a.author} · ${a.time}</div>
+        </div>
+      </div>`).join('')}
+  </div>` : ''}`;
+}
+
+function renderCatalogueSection(section, articles) {
+  const lead = articles[0];
+  const rest = articles.slice(1);
+  const color = catColors[section] || '#c0392b';
+
+  return `
+  <div class="two-col">
+    <div>
+      <div class="section-header">
+        <span class="section-header-label" style="--accent:${color}">${section.charAt(0).toUpperCase()+section.slice(1)} News</span>
+        <div class="section-header-line"></div>
+      </div>
+      <div class="article-card" style="margin-bottom:1.5rem" onclick="openArticle(${JSON.stringify(lead).replace(/"/g, '&quot;')})">
+        ${makePlaceholderImg('hero-lead-img', 300, lead.imageColor, lead.emoji)}
+        <div class="hero-lead-text">
+          <span class="article-category" style="background:${color}">${lead.category}</span>
+          <div class="hero-lead-title">${lead.title}</div>
+          <div class="hero-lead-summary">${lead.summary}</div>
+        </div>
+      </div>
+      <div class="catalogue-grid">
+        ${rest.slice(0,6).map(a => `
+          <div class="article-card" onclick="openArticle(${JSON.stringify(a).replace(/"/g, '&quot;')})">
+            ${makePlaceholderImg('article-card-img', 150, a.imageColor, a.emoji)}
+            <div class="article-card-body">
+              <span class="article-category" style="font-size:0.6rem;background:${color}">${a.category}</span>
+              <div class="article-card-title">${a.title}</div>
+              <div class="article-meta">${a.author} · ${a.time} · ${a.readTime}</div>
+              <div class="article-snippet">${a.summary}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="sticky-sidebar">
+      <div class="sidebar-box">
+        <div class="sidebar-box-title">📍 Latest Updates</div>
+        ${rest.slice(6).map(a => `
+          <div class="sidebar-item" onclick="openArticle(${JSON.stringify(a).replace(/"/g, '&quot;')})">
+            <div>
+              <div class="sidebar-item-title">${a.title}</div>
+              <div class="sidebar-item-meta">${a.time} · ${a.readTime}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+      <div class="sidebar-box">
+        <div class="sidebar-box-title">📅 Today's Edition</div>
+        <div class="weather-widget">
+          <div class="weather-temp">🗞️</div>
+          <div class="weather-city">SARTHAK News</div>
+          <div style="font-size:0.75rem;color:#888;margin-top:6px">Click any story to read in full</div>
+        </div>
+      </div>
+      <div class="ad-banner">ADVERTISEMENT SPACE</div>
+    </div>
+  </div>`;
+}
+
+function renderSearchResults(query, articles) {
+  return `
+  <div class="section-header">
+    <span class="section-header-label">Search: "${query}"</span>
+    <div class="section-header-line"></div>
+  </div>
+  <div class="news-list">
+    ${articles.map(a => `
+      <div class="news-list-item" onclick="openArticle(${JSON.stringify(a).replace(/"/g, '&quot;')})">
+        ${makePlaceholderImg('news-list-thumb', 75, a.imageColor, a.emoji)}
+        <div>
+          <span class="article-category" style="font-size:0.6rem">${a.category}</span>
+          <div class="news-list-title">${a.title}</div>
+          <div class="article-meta">${a.author} · ${a.time} · ${a.readTime}</div>
+          <div class="article-snippet">${a.summary}</div>
+        </div>
+      </div>`).join('')}
+  </div>`;
+}
+
+// ── LOAD SECTION ─────────────────────────────────────────────
+async function loadSection(section) {
+  currentSection = section;
+
+  // update nav
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const btns = document.querySelectorAll('.nav-btn');
+  btns.forEach(b => { if(b.getAttribute('onclick') && b.getAttribute('onclick').includes(`'${section}'`)) b.classList.add('active'); });
+
+  // show loader
+  document.getElementById('main-content').innerHTML =
+    `<div class="section-loading"><div class="spin"></div> Loading ${section.charAt(0).toUpperCase()+section.slice(1)} news…</div>`;
+
+  try {
+    let articles;
+    if (cachedSections[section]) {
+      articles = cachedSections[section];
+    } else {
+      articles = await fetchNewsFromClaude(section);
+      cachedSections[section] = articles;
+    }
+
+    const html = section === 'top' ? renderTopSection(articles) : renderCatalogueSection(section, articles);
+    document.getElementById('main-content').innerHTML = html;
+  } catch(e) {
+    document.getElementById('main-content').innerHTML =
+      `<div class="section-loading">⚠️ Could not load articles. Please try again.</div>`;
+  }
+}
+
+// ── SEARCH ───────────────────────────────────────────────────
+async function searchNews() {
+  const q = document.getElementById('search-input').value.trim();
+  if (!q) return;
+  document.getElementById('main-content').innerHTML =
+    `<div class="section-loading"><div class="spin"></div> Searching for "${q}"…</div>`;
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  try {
+    const articles = await fetchNewsFromClaude(null, q);
+    document.getElementById('main-content').innerHTML = renderSearchResults(q, articles);
+  } catch(e) {
+    document.getElementById('main-content').innerHTML =
+      `<div class="section-loading">⚠️ Search failed. Please try again.</div>`;
+  }
+}
+
+// ── MODAL ────────────────────────────────────────────────────
+function openArticle(article) {
+  const inner = document.getElementById('modal-inner');
+  inner.innerHTML = `
+    <div class="modal-category"><span class="article-category">${article.category}</span></div>
+    <div class="modal-title">${article.title}</div>
+    <div class="modal-meta">By ${article.author} &nbsp;·&nbsp; ${article.time} &nbsp;·&nbsp; ${article.readTime}</div>
+    ${makePlaceholderImg('modal-img', 220, article.imageColor, article.emoji)}
+    <div class="modal-body">${article.body.replace(/\n\n/g, '</p><p>').replace(/^/, '<p>').replace(/$/, '</p>')}</div>`;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalBtn();
+}
+function closeModalBtn() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalBtn(); });
+
+// ── INIT ─────────────────────────────────────────────────────
+loadSection('top');
+</script>
+</body>
+</html>

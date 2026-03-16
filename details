@@ -1,0 +1,67 @@
+News Website (HTML & CSS)
+
+A responsive and visually structured News Website built using HTML and CSS.
+This project focuses on creating a clean news layout that displays different categories of news such as technology, sports, politics, and entertainment in an organized and user-friendly way.
+
+The goal of this project was to practice frontend web development, improve UI layout skills, and understand how real-world news portals structure their content.
+
+Project Overview
+
+This website simulates a basic online news portal where users can easily browse news articles. The homepage displays multiple news sections with headlines, images, and short descriptions to make reading easier and engaging.
+
+The design focuses on clarity, readability, and structured content presentation, similar to popular news platforms.
+
+Features
+1. Structured News Layout
+
+The website organizes news articles into different sections such as:
+
+Latest News
+
+Technology
+
+Sports
+
+Entertainment
+
+Trending Stories
+
+2. Responsive Design
+
+The layout is designed to adjust across different screen sizes to provide a better user experience.
+
+3. Clean UI Design
+
+The website uses a simple and clean interface so that users can easily focus on reading news content.
+
+4. Navigation Bar
+
+A navigation menu allows users to quickly access different news categories.
+
+5. News Cards
+
+Each news article is displayed in a card-style layout with:
+
+Headline
+
+Image
+
+Short description
+
+Read more section
+
+Technologies Used
+
+HTML5 – Used to structure the content of the website
+
+CSS3 – Used for styling, layout, and responsiveness
+
+No external frameworks were used in order to strengthen core frontend skills.
+
+Project Structure
+news-website
+│
+├── index.html
+├── style.css
+├── images/
+└── README.md

@@ -28,3 +28,18 @@ Dark mode support
 API integration for real-time news
 
 Mobile optimization improvements
+
+✅ 🚀 WHAT I CHANGED / IMPROVED;-
+
+🔧 Fixed Issues
+Fixed broken CSS syntax
+Simplified structure (clean & readable)
+Removed overly complex nesting
+
+🎨 UI Improvements ;-
+
+Clean modern layout
+Responsive grid system
+Better typography hierarchy
+Dark mode toggle 🌙
+

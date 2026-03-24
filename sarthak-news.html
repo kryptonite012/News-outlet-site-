@@ -3,96 +3,68 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SARTHAK News</title>
+<title>SARTHAK News Pro</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3&display=swap" rel="stylesheet">
 
 <style>
-/* RESET */
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box}
 
-/* VARIABLES */
 :root{
-  --ink:#0d0d0d;
-  --paper:#f5f0e8;
+  --bg:#f5f0e8;
+  --text:#111;
   --accent:#c0392b;
-  --muted:#6b6560;
 }
 
-/* DARK MODE */
 .dark{
-  --paper:#0d0d0d;
-  --ink:#f5f0e8;
+  --bg:#111;
+  --text:#f5f0e8;
 }
 
-/* BODY */
 body{
-  background:var(--paper);
-  color:var(--ink);
-  font-family:'Source Sans 3',sans-serif;
-}
-
-/* TOP BAR */
-.top-bar{
-  background:var(--ink);
-  color:#ccc;
-  display:flex;
-  justify-content:space-between;
-  padding:6px 20px;
-  font-size:12px;
-}
-
-.top-bar button{
-  background:none;
-  border:none;
-  color:#ccc;
-  cursor:pointer;
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Source Sans 3';
 }
 
 /* HEADER */
 header{
+  padding:15px;
   text-align:center;
-  padding:20px;
-  border-bottom:2px solid var(--ink);
+  border-bottom:2px solid var(--text);
 }
 
-header h1{
+h1{
   font-family:'Playfair Display';
-  font-size:3rem;
 }
 
-header span{
-  color:var(--accent);
-}
+span{color:var(--accent)}
 
 /* NAV */
 nav{
-  background:var(--ink);
-  padding:10px;
   display:flex;
+  justify-content:center;
   gap:10px;
+  padding:10px;
+  background:#000;
 }
 
 nav button{
   background:none;
-  border:none;
   color:#ccc;
+  border:none;
   cursor:pointer;
 }
 
-nav button:hover{
-  color:#fff;
+/* SEARCH */
+.search{
+  text-align:center;
+  margin:10px;
 }
 
-/* MAIN */
-.container{
-  max-width:1100px;
-  margin:auto;
-  padding:20px;
+.search input{
+  padding:8px;
+  width:200px;
 }
 
 /* GRID */
@@ -100,9 +72,9 @@ nav button:hover{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
   gap:20px;
+  padding:20px;
 }
 
-/* CARD */
 .card{
   cursor:pointer;
 }
@@ -113,164 +85,129 @@ nav button:hover{
   object-fit:cover;
 }
 
-.card h3{
-  font-family:'Playfair Display';
-  margin:10px 0;
-}
-
-.meta{
-  font-size:12px;
-  color:var(--muted);
-}
-
 /* MODAL */
 .modal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,0.7);
   display:none;
+  background:rgba(0,0,0,0.7);
   justify-content:center;
   align-items:center;
 }
 
 .modal-box{
-  background:var(--paper);
+  background:#fff;
   padding:20px;
   max-width:600px;
-  max-height:80vh;
-  overflow:auto;
 }
 
-.close{
-  float:right;
-  cursor:pointer;
-}
-
-/* BUTTON */
-#topBtn{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  padding:10px;
-  display:none;
+/* BUTTONS */
+.btn{
   background:var(--accent);
   color:#fff;
   border:none;
+  padding:6px;
   cursor:pointer;
+  margin-top:5px;
 }
+
 </style>
 </head>
 
 <body>
 
-<!-- TOP -->
-<div class="top-bar">
-  <div>SARTHAK News</div>
-  <div>
-    <span id="time"></span>
-    <button onclick="toggleTheme()">🌙</button>
-  </div>
-</div>
-
-<!-- HEADER -->
 <header>
   <h1>SARTHAK <span>News</span></h1>
-  <p>Truth · Depth · Perspective</p>
 </header>
 
-<!-- NAV -->
 <nav>
   <button onclick="loadNews('general')">Top</button>
   <button onclick="loadNews('technology')">Tech</button>
   <button onclick="loadNews('sports')">Sports</button>
   <button onclick="loadNews('business')">Business</button>
+  <button onclick="toggleTheme()">🌙</button>
 </nav>
 
-<!-- MAIN -->
-<div class="container">
-  <div id="news" class="grid"></div>
+<div class="search">
+  <input id="search" placeholder="Search news">
+  <button onclick="searchNews()">Search</button>
 </div>
+
+<div id="news" class="grid"></div>
 
 <!-- MODAL -->
 <div id="modal" class="modal">
   <div class="modal-box">
-    <span class="close" onclick="closeModal()">✖</span>
+    <button onclick="closeModal()">X</button>
     <div id="modalContent"></div>
   </div>
 </div>
 
-<!-- SCROLL BTN -->
-<button id="topBtn" onclick="scrollTop()">↑</button>
-
 <script>
 
-/* TIME */
-setInterval(()=>{
-  document.getElementById("time").innerText=
-  new Date().toLocaleTimeString();
-},1000);
+/* API KEY */
+const API_KEY = "YOUR_API_KEY_HERE";
 
-/* DARK MODE */
-function toggleTheme(){
-  document.body.classList.toggle("dark");
+/* LOAD NEWS */
+async function loadNews(category){
+  let url = `https://newsapi.org/v2/top-headlines?country=in&category=${category}&apiKey=${API_KEY}`;
+  let res = await fetch(url);
+  let data = await res.json();
+  renderNews(data.articles);
 }
 
-/* LOAD NEWS (FAKE DATA SIMULATION) */
-async function loadNews(category){
-
-  document.getElementById("news").innerHTML="Loading...";
-
-  let articles=[];
-
-  for(let i=1;i<=6;i++){
-    articles.push({
-      title: category+" News Headline "+i,
-      desc: "This is a short description of the news article.",
-      img: `https://source.unsplash.com/400x300/?${category}`,
-      author:"Reporter",
-      time:"2h ago"
-    });
-  }
-
-  renderNews(articles);
+/* SEARCH */
+async function searchNews(){
+  let q = document.getElementById("search").value;
+  let url = `https://newsapi.org/v2/everything?q=${q}&apiKey=${API_KEY}`;
+  let res = await fetch(url);
+  let data = await res.json();
+  renderNews(data.articles);
 }
 
 /* RENDER */
-function renderNews(data){
+function renderNews(articles){
   let html="";
 
-  data.forEach(a=>{
+  articles.forEach(a=>{
+    if(!a.urlToImage) return;
+
     html+=`
-    <div class="card" onclick="openModal('${a.title}','${a.desc}')">
-      <img src="${a.img}">
+    <div class="card">
+      <img src="${a.urlToImage}">
       <h3>${a.title}</h3>
-      <div class="meta">${a.author} · ${a.time}</div>
-    </div>
-    `;
+      <button class="btn" onclick="openModal('${a.title}','${a.description}','${a.url}')">Read</button>
+      <button class="btn" onclick="saveBookmark('${a.title}','${a.url}')">⭐</button>
+    </div>`;
   });
 
   document.getElementById("news").innerHTML=html;
 }
 
 /* MODAL */
-function openModal(title,desc){
+function openModal(title,desc,url){
   document.getElementById("modal").style.display="flex";
   document.getElementById("modalContent").innerHTML=
-  `<h2>${title}</h2><p>${desc}</p>`;
+  `<h2>${title}</h2>
+   <p>${desc || "No description available"}</p>
+   <a href="${url}" target="_blank">Read Full Article</a>`;
 }
 
 function closeModal(){
   document.getElementById("modal").style.display="none";
 }
 
-/* SCROLL BUTTON */
-window.onscroll=()=>{
-  document.getElementById("topBtn").style.display=
-  window.scrollY>200?"block":"none";
-};
+/* BOOKMARK */
+function saveBookmark(title,url){
+  let data = JSON.parse(localStorage.getItem("bookmarks")||"[]");
+  data.push({title,url});
+  localStorage.setItem("bookmarks",JSON.stringify(data));
+  alert("Saved!");
+}
 
-function scrollTop(){
-  window.scrollTo({top:0,behavior:'smooth'});
+/* DARK MODE */
+function toggleTheme(){
+  document.body.classList.toggle("dark");
 }
 
 /* INIT */

@@ -45,7 +45,7 @@ Responsive grid system
 Better typography hierarchy
 Dark mode toggle 🌙
 
-----------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------
 
 🚀 ✅ WHAT I ADDED (SIDE-BY-SIDE EXPLANATION)
 🧠 1. REAL API INTEGRATION
